@@ -1,0 +1,29 @@
+// Prisma 7 + PostgreSQL (Railway)
+// URL de conexión en prisma.config.ts (DATABASE_URL)
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+model Invitado {
+  id                 Int       @id @default(autoincrement())
+  nombre             String
+  numero             String    @unique
+  pases              Int
+  mesa               String?
+  confirmado         Boolean   @default(false)
+  pasesConfirmados   Int       @default(0)
+  fechaConfirmacion  DateTime?
+}

@@ -1,0 +1,26 @@
+Copia aquí el contenido de tu carpeta Assets del diseño:
+
+  Assets/
+  ├── TEXTOS/          (títulos e textos en PNG)
+  │   ├── CODIGO DE VESTIMENTA.png
+  │   ├── CONFIRMA AASISTENCIAA.png
+  │   ├── FALTAN.png
+  │   ├── FECHA.png
+  │   ├── HORA.png
+  │   ├── LUGAAR.png
+  │   ├── nombre hesed.png
+  │   └── TEXTO INTRO.png
+  ├── RECURSOS/        (iconos e ilustraciones)
+  │   ├── CALENDARIO.png
+  │   ├── CASTILLO.png
+  │   ├── ESTRELLA.png
+  │   ├── ESTRELLAA DORADAA.png
+  │   ├── FONDO.png
+  │   ├── GLOBO TTEXTO.png
+  │   ├── MONITO.png
+  │   ├── RELOJ.png
+  │   └── VESTIDITO.png
+  └── nombres/         (nombre para RSVP)
+      └── CINTHYA LILIANA.png
+
+Así la invitación cargará todas las imágenes correctamente.
