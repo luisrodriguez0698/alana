@@ -19,8 +19,8 @@ const dancingScript = Dancing_Script({
 });
 
 export const metadata: Metadata = {
-  title: "Hesed - Mi 1er Cumpleaños",
-  description: "Invitación al primer cumpleaños de Hesed",
+  title: "Alana - Mi 1er Cumpleaños",
+  description: "Invitación al primer cumpleaños de Alana",
 };
 
 export default function RootLayout({
