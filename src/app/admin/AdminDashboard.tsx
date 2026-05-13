@@ -253,8 +253,8 @@ export default function AdminDashboard() {
   /* ─── Modal shell ─── */
   const modalShell = (title: string, onClose: () => void, children: React.ReactNode) =>
     mounted ? createPortal(
-      <div className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm p-4" onClick={onClose}>
-        <div className={`${D ? "bg-gray-900 text-gray-100" : "bg-white text-gray-900"} rounded-2xl shadow-2xl w-full max-w-md`} onClick={e => e.stopPropagation()}>
+      <div className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+        <div className={`${D ? "bg-gray-900 text-gray-100" : "bg-white text-gray-900"} rounded-2xl shadow-2xl w-full max-w-md`}>
           <div className={`flex items-center justify-between px-6 py-4 border-b ${divider}`}>
             <h3 className="font-semibold text-base">{title}</h3>
             <button onClick={onClose} className={`${textMuted} hover:${text} transition`}><Ic.X /></button>
