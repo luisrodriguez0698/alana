@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
 
@@ -131,7 +131,14 @@ export default function AdminDashboard() {
 
   useEffect(() => { fetchInvitados(); }, [page, estado, sortBy, sortOrder]); // eslint-disable-line
 
-  const handleSearch = (e: React.FormEvent) => { e.preventDefault(); setPage(1); fetchInvitados(); };
+  const searchFirstRender = useRef(true);
+  useEffect(() => {
+    if (searchFirstRender.current) { searchFirstRender.current = false; return; }
+    const t = setTimeout(() => { setPage(1); fetchInvitados(); }, 400);
+    return () => clearTimeout(t);
+  }, [search]); // eslint-disable-line
+
+  const clearFilters = () => { setSearch(""); setEstado("todos"); setPage(1); };
   const logout = async () => { await fetch("/api/admin/logout", { method: "POST" }); router.refresh(); router.push("/admin"); };
   const exportCsv = () => window.open("/api/admin/invitados/csv", "_blank");
 
@@ -339,7 +346,7 @@ export default function AdminDashboard() {
           {/* Toolbar */}
           <div className={`p-4 border-b ${divider}`}>
             <div className="flex flex-col sm:flex-row gap-2.5">
-              <form onSubmit={handleSearch} className="flex flex-1 gap-2 min-w-0">
+              <div className="flex flex-1 gap-2 min-w-0">
                 <div className="relative flex-1 min-w-0">
                   <div className={`absolute inset-y-0 left-3 flex items-center pointer-events-none ${textMuted}`}><Ic.Search /></div>
                   <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar por nombre o teléfono…" className={`w-full rounded-xl border pl-9 pr-4 py-2 text-sm outline-none transition ${inputCls}`} />
@@ -349,10 +356,12 @@ export default function AdminDashboard() {
                   <option value="confirmados">Confirmados</option>
                   <option value="pendientes">Pendientes</option>
                 </select>
-                <button type="submit" className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#901F1A] text-white text-sm font-semibold hover:bg-[#7a1916] transition shrink-0">
-                  <Ic.Search /><span className="hidden sm:inline">Buscar</span>
-                </button>
-              </form>
+                {(search !== "" || estado !== "todos") && (
+                  <button onClick={clearFilters} className={`flex items-center gap-1.5 px-4 py-2 rounded-xl border text-sm font-semibold transition shrink-0 ${D ? "border-gray-700 text-gray-300 hover:bg-gray-800" : "border-gray-300 text-gray-600 hover:bg-gray-100"}`}>
+                    <Ic.X /><span className="hidden sm:inline">Limpiar</span>
+                  </button>
+                )}
+              </div>
               <button onClick={openAgregar} className="flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition shrink-0">
                 <Ic.Plus /> Agregar
               </button>
