@@ -1,6 +1,18 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Dancing_Script } from "next/font/google";
 import "./globals.css";
+import localFont from 'next/font/local'
+// Configuración de Branley
+const branley = localFont({
+  src: './fonts/Branley.otf',
+  variable: '--font-branley', // Definimos una variable CSS
+})
+
+// Configuración de Farmhouse
+const farmhouse = localFont({
+  src: './fonts/Farmhouse.otf',
+  variable: '--font-farmhouse',
+})
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,7 +43,14 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${dancingScript.variable} antialiased`}
+        className={`
+          ${geistSans.variable} 
+          ${geistMono.variable} 
+          ${dancingScript.variable} 
+          ${branley.variable} 
+          ${farmhouse.variable} 
+          antialiased
+        `}
       >
         {children}
       </body>

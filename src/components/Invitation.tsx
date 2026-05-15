@@ -75,6 +75,7 @@ export default function Invitation() {
   const sectionsRef = useRef<(HTMLElement | null)[]>([]);
   const fireworksRefHero = useRef<FireworksHandlers | null>(null);
   const fireworksRefGracias = useRef<FireworksHandlers | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const [countdown, setCountdown] = useState({ days: "00", hours: "00", minutes: "00", seconds: "00" });
 
   const [hasCheckedStorage, setHasCheckedStorage] = useState(false);
@@ -86,6 +87,7 @@ export default function Invitation() {
   const [rsvpConfirming, setRsvpConfirming] = useState(false);
   const [modalAsistireOpen, setModalAsistireOpen] = useState(false);
   const [modalNoAsistirOpen, setModalNoAsistirOpen] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     const isOpen = modalAsistireOpen || modalNoAsistirOpen;
@@ -180,7 +182,7 @@ export default function Invitation() {
   };
 
   useEffect(() => {
-    const target = new Date("2026-06-20T15:00:00");
+    const target = new Date("2026-06-20T14:30:00");
     const update = () => {
       const now = new Date();
       const diff = target.getTime() - now.getTime();
@@ -496,6 +498,55 @@ export default function Invitation() {
     };
   }, [invitadoData]);
 
+  // Música de fondo en bucle al entrar a la invitación
+  useEffect(() => {
+    if (!invitadoData) return;
+    const audio = new Audio("/Assets/music/audio_fondo.mp3");
+    audio.loop = true;
+    audio.volume = 0.5;
+    audioRef.current = audio;
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
+    }
+    return () => {
+      audio.pause();
+      audio.src = "";
+      audioRef.current = null;
+    };
+  }, [invitadoData]);
+
+  const toggleMusic = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (isPlaying) {
+      audio.pause();
+      setIsPlaying(false);
+    } else {
+      audio.play().then(() => setIsPlaying(true)).catch(() => {});
+    }
+  };
+
+  // Slide-in desde los lados para las tarjetas de regalo
+  useEffect(() => {
+    if (!invitadoData || !containerRef.current) return;
+    const kills: Array<() => void> = [];
+
+    containerRef.current.querySelectorAll<HTMLElement>("[data-gift-card]").forEach((el, i) => {
+      const fromX = i % 2 === 0 ? -80 : 80;
+      gsap.set(el, { x: fromX, opacity: 0 });
+      const st = ScrollTrigger.create({
+        trigger: el,
+        start: "top 88%",
+        onEnter: () => gsap.to(el, { x: 0, opacity: 1, duration: 0.7, ease: "power3.out", delay: i * 0.12 }),
+        onLeaveBack: () => gsap.to(el, { x: fromX, opacity: 0, duration: 0.4, ease: "power2.in" }),
+      });
+      kills.push(() => st.kill());
+    });
+
+    return () => kills.forEach(fn => fn());
+  }, [invitadoData]);
+
   // Text animations — must run last so all other GSAP anims are already set up
   useEffect(() => {
     if (!invitadoData || !containerRef.current) return;
@@ -512,10 +563,25 @@ export default function Invitation() {
 
   if (invitadoData === null) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#f8e8eb] p-4 overflow-hidden">
-        <div className="bg-white rounded-2xl shadow-xl max-w-sm w-full p-6 text-[#D15366] border-2 border-[#D15366]/30">
-          <h3 className="text-lg font-bold uppercase tracking-wider mb-2 text-center">Bienvenido</h3>
-          <p className="text-sm text-gray-600 mb-4 text-center">Ingresa el número de teléfono con el que fuiste invitado para continuar.</p>
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-hidden" style={{ background: "#FFDDD7" }}>
+        {/* Blobs lava lamp */}
+        <div className="login-blob-1 absolute -top-32 -left-32 w-[420px] h-[420px]" style={{ background: "#E58E90", filter: "blur(65px)", opacity: 0.75 }} />
+        <div className="login-blob-2 absolute top-1/4 -right-36 w-[380px] h-[380px]" style={{ background: "#901F1A", filter: "blur(80px)", opacity: 0.45 }} />
+        <div className="login-blob-3 absolute -bottom-36 left-1/3 w-[460px] h-[460px]" style={{ background: "#E58E90", filter: "blur(70px)", opacity: 0.65 }} />
+        <div className="login-blob-4 absolute top-12 right-1/3 w-[320px] h-[320px]" style={{ background: "#901F1A", filter: "blur(90px)", opacity: 0.38 }} />
+        <div className="login-blob-3 absolute -bottom-20 -left-20 w-[300px] h-[300px]" style={{ background: "#FFDDD7", filter: "blur(55px)", opacity: 0.9, animationDelay: "-5s" }} />
+
+        {/* Card con efecto frosted glass */}
+        <div className="relative z-10 rounded-2xl shadow-2xl max-w-sm w-full p-6 text-[#901F1A]"
+          style={{
+            background: "rgba(255,255,255,0.55)",
+            backdropFilter: "blur(18px)",
+            WebkitBackdropFilter: "blur(18px)",
+            border: "1px solid rgba(255,255,255,0.6)",
+          }}
+        >
+          <h3 className="text-lg font-bold uppercase tracking-wider mb-2 text-center" style={{ color: "#901F1A" }}>Bienvenido</h3>
+          <p className="text-sm mb-4 text-center" style={{ color: "#901F1A", opacity: 0.75 }}>Ingresa el número de teléfono con el que fuiste invitado para continuar.</p>
           <input
             type="tel"
             inputMode="numeric"
@@ -523,11 +589,22 @@ export default function Invitation() {
             placeholder="961 238 5401"
             value={formatPhoneDisplay(numeroInput)}
             onChange={(e) => setNumeroInput(e.target.value.replace(/\D/g, "").slice(0, 10))}
-            className="w-full rounded-xl border-2 border-[#D15366]/50 px-4 py-2 text-[#D15366] placeholder:text-gray-400 mb-2"
+            className="w-full rounded-xl px-4 py-2 placeholder:text-[#E58E90]/60 mb-2 outline-none"
+            style={{
+              background: "rgba(255,255,255,0.6)",
+              border: "1.5px solid rgba(144,31,26,0.3)",
+              color: "#901F1A",
+            }}
             maxLength={12}
           />
           {numeroError && <p className="text-sm text-red-600 mb-2">{numeroError}</p>}
-          <button type="button" onClick={buscarInvitado} disabled={numeroLoading} className="w-full rounded-xl bg-[#D15366] py-2 text-sm font-bold uppercase text-white disabled:opacity-60">
+          <button
+            type="button"
+            onClick={buscarInvitado}
+            disabled={numeroLoading}
+            className="w-full rounded-xl py-2 text-sm font-bold uppercase text-white disabled:opacity-60 transition hover:opacity-90 active:scale-[0.98]"
+            style={{ background: "linear-gradient(135deg, #E58E90 0%, #901F1A 100%)" }}
+          >
             {numeroLoading ? "Buscando..." : "Entrar"}
           </button>
         </div>
@@ -631,7 +708,7 @@ export default function Invitation() {
               </div>
 
               <div className=" text-white uppercase">
-                <h2 data-text-anim="wave" data-text-anim-delay="1.2" className="text-5xl">mi bautizo</h2>
+                <h2 data-text-anim="wave" data-text-anim-delay="1.2" className="text-5xl mt-4">mi bautizo</h2>
                 <p className="text-xl">y mi primer año</p>
               </div>
 
@@ -640,7 +717,7 @@ export default function Invitation() {
               </div>
 
               <div className=" text-white">
-                <h2 data-text-anim="wave" data-text-anim-delay="1.2" className="text-6xl">Alana <br /> Elizabeth</h2>
+                <h2 data-text-anim="wave" data-text-anim-delay="1.2" className="font-farmhouse text-6xl mt-4">Alana <br /> Elizabeth</h2>
               </div>
 
               <div className=" text-white uppercase text-sm mt-5">
@@ -739,18 +816,18 @@ export default function Invitation() {
               <img src={asset(ASSETS.elementos, "icono1_Padres_padrinos.png")} alt="" className="absolute w-50 top-26 left-1/2 -translate-x-1/2"/>
             </div>
 
-            <div className=" text-white uppercase mt-8 mb-2">
-              <h2 data-text-anim="rise" className="text-3xl">Mis Padres:</h2>
-              <p className="text-sm mt-3">Ana Elizabeth Hernández <br />
+            <div className=" text-white mt-8 mb-2">
+              <h2 data-text-anim="rise" className="font-farmhouse text-5xl">Mis Padres:</h2>
+              <p className="text-sm mt-3 uppercase">Ana Elizabeth Hernández <br />
               y <br />
               Williams Hernández</p>
             </div>
 
             <img src={asset(ASSETS.elementos, "icono2_padres_padrinos.png")} alt="" className="absolute w-50 top-66 left-1/2 -translate-x-1/2"/>
 
-            <div className=" text-white uppercase mt-10 mb-2">
-              <h2 data-text-anim="rise" className="text-3xl">Mis Padrinos:</h2>
-              <p className="text-sm mt-3">Ricardo Hernández <br />
+            <div className=" text-white mt-10 mb-2">
+              <h2 data-text-anim="rise" className="font-farmhouse text-5xl">Mis Padrinos:</h2>
+              <p className="text-sm mt-3 uppercase">Ricardo Hernández <br />
               y <br />
               Reyna Cancino</p>
             </div>
@@ -761,7 +838,7 @@ export default function Invitation() {
       {/* Fecha, Hora y Lugar */}
       <section
         ref={(el) => setSectionRef(el, 3)}
-        className="snap-section relative flex flex-col items-center justify-center "
+        className="snap-section relative flex flex-col items-center justify-center my-8"
       >
 
         <div className="w-full flex flex-col items-center gap-6">
@@ -771,7 +848,7 @@ export default function Invitation() {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             {/* Card 1 - Fecha */}
             <div className="flex flex-col gap-2">
-              <div className="text-center text-4xl">
+              <div className="text-center text-6xl font-farmhouse">
                 <h2 data-text-anim="reveal">Fecha:</h2>
               </div>
               <div data-animate-content className="flex items-center gap-3">
@@ -787,7 +864,7 @@ export default function Invitation() {
             </div>
             {/* Card 1 - Hora */}
             <div className="flex flex-col gap-2 my-20">
-              <div className="text-center text-4xl">
+              <div className="text-center text-6xl font-farmhouse">
                 <h2 data-text-anim="reveal">Hora:</h2>
               </div>
               <div data-animate-content className="flex items-center gap-3">
@@ -796,13 +873,13 @@ export default function Invitation() {
                   <Image data-animate-decor src={asset(ASSETS.elementos, "icono_reloj.png")} alt="" width={70} height={70} className="mx-auto object-contain p-3" />
                 </div>
                 <div className="flex flex-col">
-                  <p className="text-3xl uppercase leading-tight">03 pm</p>
+                  <p className="text-3xl uppercase leading-tight">2:30 pm</p>
                 </div>
               </div>
             </div>
             {/* Card 1 - Lugar */}
             <div className="flex flex-col gap-2">
-              <div className="text-center text-4xl">
+              <div className="text-center text-6xl font-farmhouse">
                 <h2 data-text-anim="reveal">Lugar:</h2>
               </div>
               <div data-animate-content className="flex items-center gap-3">
@@ -872,8 +949,8 @@ export default function Invitation() {
           />
           <div className="absolute inset-0 flex flex-col items-center justify-center px-4 sm:px-12 w-80 m-auto">
             <div data-animate-title className="w-full text-center text-white text-5xl">
-             
-              <h2 data-text-anim="wave" data-text-anim-delay="1.2">{invitadoData.nombre}</h2>
+            
+              <h2 data-text-anim="wave" data-text-anim-delay="1.2" className="font-farmhouse">{invitadoData.nombre}</h2>
             </div>
             {/* <div data-animate-content className="mt-4 w-full max-w-[200px] mx-auto text-center">
               <h2 className="text-lg font-semibold uppercase tracking-wider text-[#ffddd7]">{invitadoData.nombre}</h2>
@@ -897,7 +974,7 @@ export default function Invitation() {
             ) : (
               <>
                 {numeroError && <p className="text-sm text-red-600 mb-2 text-center">{numeroError}</p>}
-                <div data-animate-content className="mt-4 flex flex-col gap-1 flex-row justify-around items-center">
+                <div data-animate-content className="mt-6 flex flex-col gap-1 flex-row justify-around w-full items-center">
                   <button
                     type="button"
                     onClick={() => setModalNoAsistirOpen(true)}
@@ -924,28 +1001,27 @@ export default function Invitation() {
         </div>
       </section>
 
-        {/* Mesa de regalos */}
+      {/* Mesa de regalos */}
       <section
         ref={(el) => setSectionRef(el, 5)}
-        className="snap-section relative flex flex-col items-center justify-center gap-10 "
-
+        className="snap-section relative flex flex-col items-center justify-center gap-10 mt-3"
       >
         <div className="w-full h-full -mt-25">
 
-          <Image src={asset(ASSETS.elementos, "papel_picado_mesa_de_regalo.png")} alt="" width={600} height={500} className="w-full h-auto object-contain" priority />
-          
-          <div className="w-full h-auto absolute top-5 text-center">
-            <div className="w-full h-full ">
-              <div className=" text-white uppercase ">
-                <h5 className="text-3xl text-[#901F1A]">Mesa de</h5>
-                <h2 className="text-5xl text-[#901F1A]">Regalos</h2>
+          <Image data-picado-wind src={asset(ASSETS.elementos, "base_redonda.png")} alt="" width={900} height={500} className="w-full h-full object-contain" priority />
+
+          <div className="w-full h-auto absolute top-1 text-center -mt-3">
+            <div data-animate-title className="w-full h-full">
+              <div className="text-white">
+                <h5 data-text-anim="reveal" className="text-4xl text-[#901F1A] font-farmhouse">Mesa de</h5>
+                <h2 data-text-anim="wave" data-text-anim-delay="0.4" className="text-6xl text-[#901F1A] font-farmhouse">Regalos</h2>
               </div>
             </div>
 
             <div className="flex justify-evenly">
-              <div className="text-white uppercase mt-8 mb-2">
-                <img src="" alt="" />
-                <p className="text-sm mt-3 text-[#901F1A]">NO. 123456789</p>
+              <div data-gift-card className="text-white uppercase mt-8 mb-2">
+                <img src={asset(ASSETS.elementos, "LOGO_LIVERPOOL.png")} alt="" className="w-30 mb-6"/>
+                {/* <p className="text-sm mt-3 text-[#901F1A]">NO. 123456789</p> */}
                 <a
                   href={ENLACE_ITEM_1}
                   target="_blank"
@@ -955,9 +1031,9 @@ export default function Invitation() {
                   Abrir
                 </a>
               </div>
-              <div className="text-white uppercase mt-8 mb-2">
-                <img src="" alt="" />
-                <p className="text-sm mt-3 text-[#901F1A]">NO. 123456789</p>
+              <div data-gift-card className="text-white uppercase mt-8 mb-2">
+                <img src={asset(ASSETS.elementos, "logo_sears.png")} alt="" className="w-30 mb-6"/>
+                {/* <p className="text-sm mt-3 text-[#901F1A]">NO. 123456789</p> */}
                 <a
                   href={ENLACE_ITEM_2}
                   target="_blank"
@@ -976,40 +1052,64 @@ export default function Invitation() {
       {/* GRACIAS POR ASISTIR */}
       <section
         ref={(el) => setSectionRef(el, 6)}
-        className="snap-section relative flex flex-col items-center justify-center "
+        className="snap-section relative flex flex-col items-center justify-center"
       >
-        {/* <Fireworks
-          ref={fireworksRefGracias}
-          options={FIREWORKS_OPTIONS}
-          autostart={false}
-          className="absolute inset-0 z-[-1] pointer-events-none opacity-50"
-          style={{ width: "100%", height: "100%" }}
-        /> */}
-        <div className="w-full flex flex-col items-center gap-6">
+        <div className="w-full flex flex-col items-center gap-6 mt-6">
 
           <Image src={asset(ASSETS.elementos, "diseno_final.png")} alt="" width={600} height={500} className="w-full pt-17 px-2 h-auto object-contain" priority />
-          <Image src={asset(ASSETS.elementos, "corazon_final.png")} alt="" width={600} height={500} className="absolute z-5 mx-auto mt-3 w-30 h-auto object-contain " priority />
+          <Image data-animate-decor data-gsap-pulse src={asset(ASSETS.elementos, "corazon_rosa.png")} alt="" width={600} height={500} className="absolute z-5 mx-auto mt-3 w-30 h-auto object-contain" priority />
 
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full mt-6">
 
-            <div className="text-[#901F1A] text-center">
-              <h2 className="text-7xl">Alana <br /> Elizabeth</h2>
+            <div data-animate-title className="text-[#901F1A] text-center w-full">
+              <h2 data-text-anim="wave" data-text-anim-delay="0.3" className="text-6xl font-farmhouse">Alana <br /> Elizabeth</h2>
             </div>
 
-            <div className="text-[#901F1A] uppercase text-center mt-8">
-              <h2 className="text-4xl">mi bautizo</h2>
+            <div data-animate-content className="text-[#901F1A] uppercase text-center mt-8">
+              <h2 data-text-anim="reveal" className="text-4xl">mi bautizo</h2>
               <p className="text-xl">y mi primer año</p>
             </div>
 
           </div>
 
-          <Image src={asset(ASSETS.elementos, "papel_picado_final.png")} alt="" width={600} height={500} className="w-full h-auto object-contain" priority />
+          <Image data-picado-wind src={asset(ASSETS.elementos, "papel_picado_final.png")} alt="" width={600} height={500} className="w-full h-auto object-contain" priority />
 
         </div>
       </section>
 
-
       </div>
+
+      {/* Botón flotante de música */}
+      <button
+        type="button"
+        onClick={toggleMusic}
+        aria-label={isPlaying ? "Pausar música" : "Reproducir música"}
+        className="fixed bottom-6 right-6 z-[9998] flex items-center justify-center w-14 h-14 rounded-full shadow-xl transition-all duration-200 hover:scale-110 active:scale-95"
+        style={{
+          background: "linear-gradient(135deg, #D15366 0%, #901F1A 100%)",
+          boxShadow: "0 4px 20px rgba(209,83,102,0.5)",
+        }}
+      >
+        {isPlaying ? (
+          /* Ícono pausa */
+          <svg viewBox="0 0 24 24" className="w-6 h-6 fill-white" xmlns="http://www.w3.org/2000/svg">
+            <rect x="6" y="5" width="4" height="14" rx="1" />
+            <rect x="14" y="5" width="4" height="14" rx="1" />
+          </svg>
+        ) : (
+          /* Ícono play */
+          <svg viewBox="0 0 24 24" className="w-6 h-6 fill-white" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 5.14v14l11-7-11-7z" />
+          </svg>
+        )}
+        {/* Anillo pulsante cuando está reproduciendo */}
+        {isPlaying && (
+          <span
+            className="absolute inset-0 rounded-full animate-ping opacity-30"
+            style={{ background: "linear-gradient(135deg, #D15366, #901F1A)" }}
+          />
+        )}
+      </button>
     </div>
   );
 }

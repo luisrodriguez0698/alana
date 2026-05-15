@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "WebFetch(domain:codepen.io)"
+      "WebFetch(domain:codepen.io)",
+      "Bash(npm run *)",
+      "Bash(Test-Path \"c:\\\\Users\\\\qwert\\\\OneDrive\\\\Documentos\\\\PROYECTOS WEB\\\\Invitaciones\\\\Alana-1\\\\Diseño\\\\Hesed\\\\node_modules\\\\next\")"
     ]
   }
 }

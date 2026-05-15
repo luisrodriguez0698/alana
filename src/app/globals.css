@@ -18,6 +18,9 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-script: var(--font-dancing);
+
+  --font-branley: var(--font-branley);
+  --font-farmhouse: var(--font-farmhouse);
 }
 
 html {
@@ -28,9 +31,13 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), system-ui, sans-serif;
+  font-family: var(--font-branley);
   overflow-x: clip;
   max-width: 100vw;
+}
+
+p {
+  letter-spacing: 0.09em;
 }
 
 /* ===== Pixel Birds ===== */
@@ -344,6 +351,40 @@ body {
     --h: 11px; top: calc(var(--m) * 0px); transform: scale(1, -1);
   }
 }
+
+/* ===== Login blobs (lava lamp) ===== */
+@keyframes blob-1 {
+  0%   { transform: translate(0px, 0px)     scale(1);    border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%; }
+  20%  { transform: translate(70px, -90px)  scale(1.18); border-radius: 45% 55% 40% 60% / 60% 40% 55% 45%; }
+  40%  { transform: translate(-50px, 60px)  scale(0.88); border-radius: 55% 45% 60% 40% / 45% 55% 50% 50%; }
+  60%  { transform: translate(80px, 50px)   scale(1.14); border-radius: 40% 60% 45% 55% / 55% 45% 60% 40%; }
+  80%  { transform: translate(-60px, -70px) scale(0.92); border-radius: 50% 50% 55% 45% / 40% 60% 45% 55%; }
+  100% { transform: translate(0px, 0px)     scale(1);    border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%; }
+}
+@keyframes blob-2 {
+  0%   { transform: translate(0px, 0px)      scale(1);    border-radius: 50% 50% 40% 60% / 60% 45% 55% 40%; }
+  25%  { transform: translate(-90px, 70px)   scale(1.2);  border-radius: 60% 40% 55% 45% / 50% 60% 40% 55%; }
+  50%  { transform: translate(60px, -80px)   scale(0.85); border-radius: 40% 60% 50% 50% / 55% 45% 60% 40%; }
+  75%  { transform: translate(-70px, -50px)  scale(1.18); border-radius: 55% 45% 40% 60% / 45% 55% 50% 50%; }
+  100% { transform: translate(0px, 0px)      scale(1);    border-radius: 50% 50% 40% 60% / 60% 45% 55% 40%; }
+}
+@keyframes blob-3 {
+  0%   { transform: translate(0px, 0px)    scale(1);    border-radius: 45% 55% 60% 40% / 55% 45% 40% 60%; }
+  33%  { transform: translate(65px, 95px)  scale(0.86); border-radius: 60% 40% 45% 55% / 40% 60% 55% 45%; }
+  66%  { transform: translate(-80px, -65px) scale(1.22); border-radius: 50% 50% 55% 45% / 60% 40% 50% 50%; }
+  100% { transform: translate(0px, 0px)    scale(1);    border-radius: 45% 55% 60% 40% / 55% 45% 40% 60%; }
+}
+@keyframes blob-4 {
+  0%   { transform: translate(0px, 0px)    scale(1);    border-radius: 55% 45% 50% 50% / 40% 60% 45% 55%; }
+  30%  { transform: translate(-65px, -80px) scale(1.15); border-radius: 40% 60% 55% 45% / 55% 45% 60% 40%; }
+  60%  { transform: translate(85px, 55px)  scale(0.88); border-radius: 60% 40% 45% 55% / 50% 50% 40% 60%; }
+  100% { transform: translate(0px, 0px)    scale(1);    border-radius: 55% 45% 50% 50% / 40% 60% 45% 55%; }
+}
+
+.login-blob-1 { animation: blob-1 10s ease-in-out infinite; }
+.login-blob-2 { animation: blob-2 13s ease-in-out infinite; }
+.login-blob-3 { animation: blob-3  8s ease-in-out infinite; }
+.login-blob-4 { animation: blob-4 12s ease-in-out infinite reverse; }
 
 /* ===== Snap por secciones en móvil ===== */
 /* Snap por secciones en móvil */
