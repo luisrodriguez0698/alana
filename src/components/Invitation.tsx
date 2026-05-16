@@ -764,7 +764,7 @@ export default function Invitation() {
         </div>
         <div className="relative flex flex-wrap items-start justify-evenly gap-3 sm:gap-3 w-full h-32">
           {/* capa de fondo — recibe el efecto tela+viento sin afectar los números */}
-          <div data-picado-wind className="absolute inset-0"
+          <div  className="absolute inset-0"
             style={{
               backgroundImage: `url(${asset(ASSETS.elementos, "papel_picado_CONTADOR.png")})`,
               backgroundSize: "cover",
@@ -803,7 +803,7 @@ export default function Invitation() {
         <div className="w-full h-full -mt-22">
 
           <Image data-picado-wind src={asset(ASSETS.elementos, "papel_picado_padres_padrinos.png")} alt="" width={600} height={500} className="w-full h-auto object-contain" priority />
-          <div className="w-full h-full text-center absolute top-5">
+          <div data-picado-wind className="w-full h-full text-center absolute top-5">
             <div className=" text-white uppercase text-xs">
               <p>
                 Dios mío, gracias por el regalo de <br /> 
