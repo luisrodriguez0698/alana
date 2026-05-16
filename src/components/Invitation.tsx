@@ -550,7 +550,35 @@ export default function Invitation() {
   // Text animations — must run last so all other GSAP anims are already set up
   useEffect(() => {
     if (!invitadoData || !containerRef.current) return;
-    return initTextAnimations(containerRef.current);
+    const cleanup = initTextAnimations(containerRef.current);
+
+    // Al entrar por primera vez las imágenes no están cargadas aún y
+    // ScrollTrigger calcula posiciones incorrectas. Refrescamos en dos
+    // momentos: uno rápido para elementos que no dependen de imágenes,
+    // y otro después de que las imágenes terminen de cargar.
+    const t1 = setTimeout(() => ScrollTrigger.refresh(), 300);
+
+    const images = containerRef.current
+      ? Array.from(containerRef.current.querySelectorAll<HTMLImageElement>("img"))
+      : [];
+    let pending = images.filter(img => !img.complete).length;
+
+    if (pending === 0) {
+      const t2 = setTimeout(() => ScrollTrigger.refresh(), 50);
+      return () => { cleanup(); clearTimeout(t1); clearTimeout(t2); };
+    }
+
+    const onLoad = () => {
+      pending--;
+      if (pending === 0) ScrollTrigger.refresh();
+    };
+    images.forEach(img => { if (!img.complete) img.addEventListener("load", onLoad, { once: true }); });
+
+    return () => {
+      cleanup();
+      clearTimeout(t1);
+      images.forEach(img => img.removeEventListener("load", onLoad));
+    };
   }, [invitadoData]);
 
   if (!hasCheckedStorage) {
