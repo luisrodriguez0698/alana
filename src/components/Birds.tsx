@@ -523,7 +523,18 @@ export default function Birds({ count = 4 }: { count?: number }) {
       }
 
       flyToZone(zoneIndex: number, alwaysFly = false) {
-        if (this.isFlying || this.isHopping) return;
+        if (this.isFlying) return;
+
+        // Si cambió de zona mientras esperaba hacer hop, cancela y vuela
+        if (this.isHopping && zoneIndex !== this.currentZone) {
+          clearTimeout(this.animationTimer!);
+          clearInterval(this.hopInterval!);
+          this.isHopping = false;
+          this.el.classList.remove('hop');
+        }
+
+        if (this.isHopping) return;
+
         const zone = zones[Math.min(zoneIndex, zones.length - 1)];
         if (!zone?.length) return;
 
@@ -547,7 +558,7 @@ export default function Birds({ count = 4 }: { count?: number }) {
             this.animationTimer = setTimeout(() => {
               this.isHopping = false;
             }, 1200);
-          }, 800 + this.id * 400 + Math.random() * 1200);
+          }, 200 + this.id * 200 + Math.random() * 500);
           return;
         }
 

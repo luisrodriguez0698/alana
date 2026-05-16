@@ -802,7 +802,7 @@ export default function Invitation() {
       >
         <div className="w-full h-full -mt-22">
 
-          <Image src={asset(ASSETS.elementos, "papel_picado_padres_padrinos.png")} alt="" width={600} height={500} className="w-full h-auto object-contain" priority />
+          <Image data-anim-pop src={asset(ASSETS.elementos, "papel_picado_padres_padrinos.png")} alt="" width={600} height={500} className="w-full h-auto object-contain" priority />
           <div className="w-full h-full text-center absolute top-5">
             <div className=" text-white uppercase text-xs">
               <p>
@@ -817,7 +817,7 @@ export default function Invitation() {
             </div>
 
             <div className=" text-white mt-6">
-              <h2 className="font-farmhouse text-5xl">Mis Padres:</h2>
+              <h2 data-text-anim="reveal" className="font-farmhouse text-5xl">Mis Padres:</h2>
               <p className="text-xs mt-1 uppercase">Ana Elizabeth Hernández <br />
               y <br />
               Williams Hernández</p>
@@ -826,7 +826,7 @@ export default function Invitation() {
             <img src={asset(ASSETS.elementos, "icono2_padres_padrinos.png")} alt="" className="absolute w-50 top-58 left-1/2 -translate-x-1/2"/>
 
             <div className=" text-white mt-10">
-              <h2 className="font-farmhouse text-5xl">Mis Padrinos:</h2>
+              <h2 data-text-anim="reveal" className="font-farmhouse text-5xl">Mis Padrinos:</h2>
               <p className="text-xs mt-1 uppercase">Ricardo Hernández <br />
               y <br />
               Reyna Cancino</p>
@@ -843,7 +843,7 @@ export default function Invitation() {
 
         <div className="w-full flex flex-col items-center gap-6">
 
-          <Image src={asset(ASSETS.elementos, "diseño_información.png")} alt="" width={600} height={500} className="w-full h-auto object-contain" priority />
+          <Image data-anim-pop src={asset(ASSETS.elementos, "diseño_información.png")} alt="" width={600} height={500} className="w-full h-auto object-contain" priority />
 
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full">
             {/* Card 1 - Fecha */}
@@ -853,8 +853,8 @@ export default function Invitation() {
               </div>
               <div data-animate-content className="flex items-center gap-3 mx-auto">
                 <div className="relative w-20 h-20 shrink-0">
-                  <Image data-animate-decor src={asset(ASSETS.elementos, "cuadro_iconos_info.png")} alt="" fill className="object-contain" />
-                  <Image data-animate-decor src={asset(ASSETS.elementos, "icono_calendario.png")} alt="" width={70} height={70} className="mx-auto object-contain p-3" />
+                  <Image data-anim-pop data-animate-decor src={asset(ASSETS.elementos, "cuadro_iconos_info.png")} alt="" fill className="object-contain" />
+                  <Image data-anim-pop data-animate-decor src={asset(ASSETS.elementos, "icono_calendario.png")} alt="" width={70} height={70} className="mx-auto object-contain p-3" />
                 </div>
                 <div className="flex flex-col">
                   <p className="text-3xl uppercase leading-tight">Sábado</p>
@@ -939,8 +939,9 @@ export default function Invitation() {
           </div> */}
         </div>
         <div data-animate-title className="mb-2 w-full max-w-md" />
-        <div data-animate-content className="relative w-full max-w-md">
+        <div className="relative w-full max-w-md">
           <Image
+            data-anim-pop
             src={asset(ASSETS.elementos, "papel_picado_confirmacion.png")}
             alt=""
             width={500}
@@ -956,7 +957,7 @@ export default function Invitation() {
               <h2 className="text-lg font-semibold uppercase tracking-wider text-[#ffddd7]">{invitadoData.nombre}</h2>
             </div> */}
             {invitadoData.confirmado ? (
-              <div data-animate-content className="mt-4 text-center">
+              <div data-anim-pop className="mt-4 text-center">
                 {invitadoData.pasesConfirmados > 0 ? (
                   <div className="flex flex-col items-center gap-1">
                     <p className="text-2xl font-bold text-[#ffddd7] uppercase tracking-wide">¡Te esperamos!</p>
@@ -974,7 +975,7 @@ export default function Invitation() {
             ) : (
               <>
                 {numeroError && <p className="text-sm text-red-600 mb-2 text-center">{numeroError}</p>}
-                <div data-animate-content className="mt-6 flex flex-col gap-1 flex-row justify-around w-full items-center">
+                <div data-anim-pop className="mt-6 flex flex-col gap-1 flex-row justify-around w-full items-center">
                   <button
                     type="button"
                     onClick={() => setModalNoAsistirOpen(true)}
@@ -1056,7 +1057,7 @@ export default function Invitation() {
       >
         <div className="w-full flex flex-col items-center gap-6 mt-6">
 
-          <Image src={asset(ASSETS.elementos, "diseno_final.png")} alt="" width={600} height={500} className="w-full pt-17 px-2 h-auto object-contain" priority />
+          <Image data-anim-pop src={asset(ASSETS.elementos, "diseno_final.png")} alt="" width={600} height={500} className="w-full pt-17 px-2 h-auto object-contain" priority />
           <Image data-animate-decor data-gsap-pulse src={asset(ASSETS.elementos, "corazon_rosa.png")} alt="" width={600} height={500} className="absolute z-5 mx-auto mt-3 w-30 h-auto object-contain" priority />
 
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full mt-6">
@@ -1072,7 +1073,7 @@ export default function Invitation() {
 
           </div>
 
-          <Image data-picado-wind src={asset(ASSETS.elementos, "papel_picado_final.png")} alt="" width={600} height={500} className="w-full h-auto object-contain" priority />
+          <Image src={asset(ASSETS.elementos, "papel_picado_final.png")} alt="" width={600} height={500} className="w-full h-auto object-contain" priority />
 
         </div>
       </section>

@@ -141,12 +141,34 @@ export function initTextAnimations(root: HTMLElement): () => void {
     });
 
     const st = ScrollTrigger.create({
-      trigger: el, start: "top 88%", end: "bottom 12%",
+      trigger: el, start: "top 95%",
+      onEnter:     () => tween.play(),
+      onEnterBack: () => tween.play(),
+      onLeaveBack: () => tween.reverse(),
+    });
+    kills.push(() => { tween.kill(); st.kill(); });
+  });
+
+  // ── pop: scale 0→1 con rebote al entrar, 1→0 con fade al salir ──────────────
+  root.querySelectorAll<HTMLElement>("[data-anim-pop]").forEach(el => {
+    gsap.set(el, { scale: 0.4, opacity: 0, transformOrigin: "center center" });
+
+    const tween = gsap.to(el, {
+      scale:   1,
+      opacity: 1,
+      duration: 0.7,
+      ease:    "back.out(2.5)",
+      paused:  true,
+    });
+
+    const st = ScrollTrigger.create({
+      trigger: el, start: "top 90%",
       onEnter:     () => tween.play(),
       onLeave:     () => tween.reverse(),
       onEnterBack: () => tween.play(),
       onLeaveBack: () => tween.reverse(),
     });
+
     kills.push(() => { tween.kill(); st.kill(); });
   });
 
