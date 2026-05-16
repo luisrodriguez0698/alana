@@ -26,8 +26,8 @@ function asset(path: string, file: string) {
 
 const GOOGLE_MAPS_LINK = "https://maps.app.goo.gl/QiZ6GNFLGTiuuYDm8";
 const APPLE_MAPS_LINK = "https://maps.apple/p/-YkAN-fI9CzBcj";
-const ENLACE_ITEM_1 = ""; // pega aquí la URL del primer botón
-const ENLACE_ITEM_2 = ""; // pega aquí la URL del segundo botón
+const ENLACE_ITEM_1 = "https://mesaderegalos.liverpool.com.mx/milistaderegalos/52002568"; // pega aquí la URL del primer botón
+const ENLACE_ITEM_2 = "https://www.sears.com.mx/Mesa-de-Regalos/253637/Te-invito-a-mi-Bautizo---Alanna-Elizabeth"; // pega aquí la URL del segundo botón
 
 // Opciones para fireworks-js: tonos rosas (#D15366 / #CC6B7F ≈ hue 345–355)
 const FIREWORKS_OPTIONS = {
@@ -684,7 +684,7 @@ export default function Invitation() {
         // }}
         aria-hidden
       />
-        <Birds count={6} />
+        <Birds count={4} />
       {/* Contenido por encima del fondo para que los bg de las secciones se vean */}
       <div className="relative z-100 bg-[#FFDdD7] overflow-hidden">
       
@@ -702,25 +702,25 @@ export default function Invitation() {
           <Image src={asset(ASSETS.elementos, "BASE_INTRO.png")} alt="" width={600} height={500} className="w-full h-auto object-contain mt-20" priority />
           <Image src={asset(ASSETS.elementos, "corazon_final.png")} alt="" width={600} height={500} className="absolute z-5 top-10 left-1/2 -translate-x-1/2 w-20 h-auto object-contain mt-20" priority />
 
-            <div className="absolute z-5 top-60 w-full text-center">
-              <div className=" text-white uppercase text-sm">
+            <div className="absolute z-5 top-55 w-full text-center">
+              <div className=" text-white uppercase text-xs ">
                 <p>con mucha ilusión y amor, <br /> quiero invitarte a compartir <br /> conmigo un día muy especial:</p>
               </div>
 
               <div className=" text-white uppercase">
-                <h2 data-text-anim="wave" data-text-anim-delay="1.2" className="text-5xl mt-4">mi bautizo</h2>
-                <p className="text-xl">y mi primer año</p>
+                <h2 data-text-anim="wave" data-text-anim-delay="1.2" className="text-5xl mt-1">mi bautizo</h2>
+                <p className="text-xl -mt-2">y mi primer año</p>
               </div>
 
-              <div className="text-white uppercase text-sm mt-5">
+              <div className="text-white uppercase text-xs  mt-9">
                 <p>Mis papás y yo:</p>
               </div>
 
               <div className=" text-white">
-                <h2 data-text-anim="wave" data-text-anim-delay="1.2" className="font-farmhouse text-6xl mt-4">Alana <br /> Elizabeth</h2>
+                <h2 data-text-anim="wave" data-text-anim-delay="1.2" className="font-farmhouse text-6xl mt-4 leading-none">Alana <br /> Elizabeth</h2>
               </div>
 
-              <div className=" text-white uppercase text-sm mt-5">
+              <div className=" text-white uppercase text-xs  mt-4">
                 <p>te esperamos para celebrar <br /> juntos un dia lleno de amor y <br /> bendiciones.</p>
               </div>
             </div>
@@ -800,11 +800,11 @@ export default function Invitation() {
         className="snap-section relative flex flex-col items-center justify-center gap-10 "
 
       >
-        <div className="w-full h-full -mt-25">
+        <div className="w-full h-full -mt-22">
 
           <Image data-picado-wind src={asset(ASSETS.elementos, "papel_picado_padres_padrinos.png")} alt="" width={600} height={500} className="w-full h-auto object-contain" priority />
           <div className="w-full h-full text-center absolute top-5">
-            <div className=" text-white uppercase text-sm">
+            <div className=" text-white uppercase text-xs">
               <p>
                 Dios mío, gracias por el regalo de <br /> 
                 la vida. Hoy te pido que me tomes <br />
@@ -813,21 +813,21 @@ export default function Invitation() {
                 Que nunca me falten tus <br />
                 bendiciones.
               </p>
-              <img src={asset(ASSETS.elementos, "icono1_Padres_padrinos.png")} alt="" className="absolute w-50 top-26 left-1/2 -translate-x-1/2"/>
+              <img src={asset(ASSETS.elementos, "icono1_Padres_padrinos.png")} alt="" className="absolute w-50 top-20 left-1/2 -translate-x-1/2"/>
             </div>
 
-            <div className=" text-white mt-8 mb-2">
+            <div className=" text-white mt-6">
               <h2 data-text-anim="rise" className="font-farmhouse text-5xl">Mis Padres:</h2>
-              <p className="text-sm mt-3 uppercase">Ana Elizabeth Hernández <br />
+              <p className="text-xs mt-1 uppercase">Ana Elizabeth Hernández <br />
               y <br />
               Williams Hernández</p>
             </div>
 
-            <img src={asset(ASSETS.elementos, "icono2_padres_padrinos.png")} alt="" className="absolute w-50 top-66 left-1/2 -translate-x-1/2"/>
+            <img src={asset(ASSETS.elementos, "icono2_padres_padrinos.png")} alt="" className="absolute w-50 top-58 left-1/2 -translate-x-1/2"/>
 
-            <div className=" text-white mt-10 mb-2">
+            <div className=" text-white mt-10">
               <h2 data-text-anim="rise" className="font-farmhouse text-5xl">Mis Padrinos:</h2>
-              <p className="text-sm mt-3 uppercase">Ricardo Hernández <br />
+              <p className="text-xs mt-1 uppercase">Ricardo Hernández <br />
               y <br />
               Reyna Cancino</p>
             </div>
@@ -838,20 +838,20 @@ export default function Invitation() {
       {/* Fecha, Hora y Lugar */}
       <section
         ref={(el) => setSectionRef(el, 3)}
-        className="snap-section relative flex flex-col items-center justify-center my-8"
+        className="snap-section relative flex flex-col items-center justify-center my-15"
       >
 
         <div className="w-full flex flex-col items-center gap-6">
 
           <Image src={asset(ASSETS.elementos, "diseño_información.png")} alt="" width={600} height={500} className="w-full h-auto object-contain" priority />
 
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full">
             {/* Card 1 - Fecha */}
             <div className="flex flex-col gap-2">
               <div className="text-center text-6xl font-farmhouse">
                 <h2 data-text-anim="reveal">Fecha:</h2>
               </div>
-              <div data-animate-content className="flex items-center gap-3">
+              <div data-animate-content className="flex items-center gap-3 mx-auto">
                 <div className="relative w-20 h-20 shrink-0">
                   <Image data-animate-decor src={asset(ASSETS.elementos, "cuadro_iconos_info.png")} alt="" fill className="object-contain" />
                   <Image data-animate-decor src={asset(ASSETS.elementos, "icono_calendario.png")} alt="" width={70} height={70} className="mx-auto object-contain p-3" />
@@ -867,7 +867,7 @@ export default function Invitation() {
               <div className="text-center text-6xl font-farmhouse">
                 <h2 data-text-anim="reveal">Hora:</h2>
               </div>
-              <div data-animate-content className="flex items-center gap-3">
+              <div data-animate-content className="flex items-center gap-3 mx-auto">
                 <div className="relative w-20 h-20 shrink-0">
                   <Image data-animate-decor src={asset(ASSETS.elementos, "cuadro_iconos_info.png")} alt="" fill className="object-contain" />
                   <Image data-animate-decor src={asset(ASSETS.elementos, "icono_reloj.png")} alt="" width={70} height={70} className="mx-auto object-contain p-3" />
@@ -882,7 +882,7 @@ export default function Invitation() {
               <div className="text-center text-6xl font-farmhouse">
                 <h2 data-text-anim="reveal">Lugar:</h2>
               </div>
-              <div data-animate-content className="flex items-center gap-3">
+              <div data-animate-content className="flex items-center gap-3 mx-auto">
                 <div className="relative w-20 h-20 shrink-0">
                   <Image data-animate-decor src={asset(ASSETS.elementos, "cuadro_iconos_info.png")} alt="" fill className="object-contain" />
                   <Image data-animate-decor src={asset(ASSETS.elementos, "icono_ubicacion.png")} alt="" width={70} height={70} className="mx-auto object-contain p-3" />
@@ -1006,7 +1006,7 @@ export default function Invitation() {
         ref={(el) => setSectionRef(el, 5)}
         className="snap-section relative flex flex-col items-center justify-center gap-10 mt-3"
       >
-        <div className="w-full h-full -mt-25">
+        <div className="w-full h-full -mt-20">
 
           <Image data-picado-wind src={asset(ASSETS.elementos, "base_redonda.png")} alt="" width={900} height={500} className="w-full h-full object-contain" priority />
 

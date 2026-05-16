@@ -292,7 +292,7 @@ const BIRD_CSS = `
 }
 `;
 
-export default function Birds({ count = 6 }: { count?: number }) {
+export default function Birds({ count = 4 }: { count?: number }) {
   useEffect(() => {
     const styleEl = document.createElement('style');
     styleEl.id = 'bird-css';
@@ -541,13 +541,13 @@ export default function Birds({ count = 6 }: { count?: number }) {
           this.isHopping = true;
           this.animationTimer = setTimeout(() => {
             const r = Math.random();
-            if (r < 0.5) this.twitch();
-            else if (r < 0.8) this.hop();
+            if (r < 0.55) this.twitch();
+            else if (r < 0.88) this.hop();
             else this.tweet();
             this.animationTimer = setTimeout(() => {
               this.isHopping = false;
             }, 1200);
-          }, Math.random() * 300);
+          }, 800 + this.id * 400 + Math.random() * 1200);
           return;
         }
 
