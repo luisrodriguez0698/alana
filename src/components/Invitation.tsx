@@ -684,7 +684,7 @@ export default function Invitation() {
         // }}
         aria-hidden
       />
-        <Birds count={4} />
+        {/* <Birds count={4} /> */}
       {/* Contenido por encima del fondo para que los bg de las secciones se vean */}
       <div className="relative z-100 bg-[#FFDdD7] overflow-hidden">
       
@@ -802,8 +802,8 @@ export default function Invitation() {
       >
         <div className="w-full h-full -mt-22">
 
-          <Image data-picado-wind src={asset(ASSETS.elementos, "papel_picado_padres_padrinos.png")} alt="" width={600} height={500} className="w-full h-auto object-contain" priority />
-          <div data-picado-wind className="w-full h-full text-center absolute top-5">
+          <Image src={asset(ASSETS.elementos, "papel_picado_padres_padrinos.png")} alt="" width={600} height={500} className="w-full h-auto object-contain" priority />
+          <div className="w-full h-full text-center absolute top-5">
             <div className=" text-white uppercase text-xs">
               <p>
                 Dios mío, gracias por el regalo de <br /> 
@@ -817,7 +817,7 @@ export default function Invitation() {
             </div>
 
             <div className=" text-white mt-6">
-              <h2 data-text-anim="rise" className="font-farmhouse text-5xl">Mis Padres:</h2>
+              <h2 className="font-farmhouse text-5xl">Mis Padres:</h2>
               <p className="text-xs mt-1 uppercase">Ana Elizabeth Hernández <br />
               y <br />
               Williams Hernández</p>
@@ -826,7 +826,7 @@ export default function Invitation() {
             <img src={asset(ASSETS.elementos, "icono2_padres_padrinos.png")} alt="" className="absolute w-50 top-58 left-1/2 -translate-x-1/2"/>
 
             <div className=" text-white mt-10">
-              <h2 data-text-anim="rise" className="font-farmhouse text-5xl">Mis Padrinos:</h2>
+              <h2 className="font-farmhouse text-5xl">Mis Padrinos:</h2>
               <p className="text-xs mt-1 uppercase">Ricardo Hernández <br />
               y <br />
               Reyna Cancino</p>
@@ -950,7 +950,7 @@ export default function Invitation() {
           <div className="absolute inset-0 flex flex-col items-center justify-center px-4 sm:px-12 w-80 m-auto">
             <div data-animate-title className="w-full text-center text-white text-5xl">
             
-              <h2 data-text-anim="wave" data-text-anim-delay="1.2" className="font-farmhouse">{invitadoData.nombre}</h2>
+              <h2 className="font-farmhouse">{invitadoData.nombre}</h2>
             </div>
             {/* <div data-animate-content className="mt-4 w-full max-w-[200px] mx-auto text-center">
               <h2 className="text-lg font-semibold uppercase tracking-wider text-[#ffddd7]">{invitadoData.nombre}</h2>
