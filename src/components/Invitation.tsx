@@ -732,7 +732,7 @@ export default function Invitation() {
           <Image src={asset(ASSETS.elementos, "BASE_INTRO.png")} alt="" width={600} height={500} className="w-full h-auto object-contain mt-20" priority />
           <Image src={asset(ASSETS.elementos, "corazon_final.png")} alt="" width={600} height={500} className="absolute z-5 top-10 left-1/2 -translate-x-1/2 w-20 h-auto object-contain mt-20" priority />
 
-            <div className="absolute z-5 top-60 w-full text-center">
+            <div className="absolute z-5 top-55 w-full text-center">
               <div className=" text-white uppercase text-xs ">
                 <p>con mucha ilusión y amor, <br /> quiero invitarte a compartir <br /> conmigo un día muy especial:</p>
               </div>
@@ -742,7 +742,7 @@ export default function Invitation() {
                 <p className="text-xl -mt-2">y mi primer año</p>
               </div>
 
-              <div className="text-white uppercase text-xs mt-9">
+              <div className="text-white uppercase text-xs mt-5">
                 <p>Mis papás y yo:</p>
               </div>
 
@@ -903,25 +903,7 @@ export default function Invitation() {
                 </div>
               </div>
             </div>
-            {/* Card 1 - Hora */}
-            <div className="flex flex-col mt-12">
-              <div className="text-center text-6xl font-farmhouse">
-                <h2 data-text-anim="reveal">Hora:</h2>
-              </div>
-              <div data-animate-content className="flex items-center gap-3 mx-auto">
-                <div className="relative w-20 h-20 shrink-0">
-                  <Image data-animate-decor src={asset(ASSETS.elementos, "cuadro_iconos_info.png")} alt="" fill className="object-contain" />
-                  <Image data-animate-decor src={asset(ASSETS.elementos, "icono_reloj.png")} alt="" width={70} height={70} className="mx-auto object-contain p-3" />
-                </div>
-                <div className="flex flex-col">
-                  <div>
-                    <p className="text-3xl uppercase leading-tight">2:30 pm</p>
-                  </div>
-                </div>
-              </div>
-            </div>
 
-            {/* Card 1 - Lugar */}
             <div className="flex flex-col mt-10">
               <div className="text-center text-6xl font-farmhouse">
                 <h2 data-text-anim="reveal">Misa:</h2>
@@ -968,7 +950,28 @@ export default function Invitation() {
                 </div>
             </div>
 
-            <div className="flex flex-col gap-2">
+            {/* Card 1 - Lugar */}
+
+            {/* Card 1 - Hora */}
+            <div className="flex flex-col mt-6">
+              <div className="text-center text-6xl font-farmhouse">
+                <h2 data-text-anim="reveal">Hora:</h2>
+              </div>
+              <div data-animate-content className="flex items-center gap-3 mx-auto">
+                <div className="relative w-20 h-20 shrink-0">
+                  <Image data-animate-decor src={asset(ASSETS.elementos, "cuadro_iconos_info.png")} alt="" fill className="object-contain" />
+                  <Image data-animate-decor src={asset(ASSETS.elementos, "icono_reloj.png")} alt="" width={70} height={70} className="mx-auto object-contain p-3" />
+                </div>
+                <div className="flex flex-col">
+                  <div>
+                    <p className="text-3xl uppercase leading-tight">2:30 pm</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div className="flex flex-col gap-2 mt-5">
               <div className="text-center text-6xl font-farmhouse">
                 <h2 data-text-anim="reveal">Lugar:</h2>
               </div>
