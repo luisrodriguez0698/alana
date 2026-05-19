@@ -33,6 +33,11 @@ const dancingScript = Dancing_Script({
 export const metadata: Metadata = {
   title: "Alana - Mi 1er Cumpleaños",
   description: "Invitación al primer cumpleaños de Alana",
+  openGraph: {
+    title: "Alana - Mi 1er Cumpleaños",
+    description: "Invitación al primer cumpleaños de Alana",
+    images: [{ url: "/Assets/ELEMENTOS/corazon_rosa.png" }],
+  },
 };
 
 export default function RootLayout({
