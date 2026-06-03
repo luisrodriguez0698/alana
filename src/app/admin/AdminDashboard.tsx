@@ -38,7 +38,8 @@ const Ic = {
   Person:   () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>,
   Sun:      () => <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>,
   Moon:     () => <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>,
-  Edit:     () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>,
+  Edit:       () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>,
+  UserCheck:  () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>,
   Trash:    () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>,
   Reset:    () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>,
   Download: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>,
@@ -86,6 +87,9 @@ export default function AdminDashboard() {
   const [invitadoToEliminar, setInvitadoToEliminar] = useState<InvitadoRow | null>(null);
   const [invitadoToReset, setInvitadoToReset] = useState<InvitadoRow | null>(null);
   const [modalResetOpen, setModalResetOpen] = useState(false);
+  const [modalConfirmarOpen, setModalConfirmarOpen] = useState(false);
+  const [invitadoToConfirmar, setInvitadoToConfirmar] = useState<InvitadoRow | null>(null);
+  const [formPasesConfirmados, setFormPasesConfirmados] = useState(1);
   const [formLoading, setFormLoading] = useState(false);
   const [formError, setFormError] = useState("");
   const [formNombre, setFormNombre] = useState("");
@@ -149,6 +153,23 @@ export default function AdminDashboard() {
   const closeEliminar = () => { setModalEliminarOpen(false); setInvitadoToEliminar(null); };
   const openReset = (inv: InvitadoRow) => { setInvitadoToReset(inv); setModalResetOpen(true); };
   const closeReset = () => { setModalResetOpen(false); setInvitadoToReset(null); };
+  const openConfirmar = (inv: InvitadoRow) => { setInvitadoToConfirmar(inv); setFormPasesConfirmados(inv.pases); setFormError(""); setModalConfirmarOpen(true); };
+  const closeConfirmar = () => { setModalConfirmarOpen(false); setInvitadoToConfirmar(null); };
+  const submitConfirmar = async () => {
+    if (!invitadoToConfirmar) return;
+    setFormLoading(true);
+    try {
+      const res = await fetch(`/api/admin/invitados/${invitadoToConfirmar.id}`, {
+        method: "PATCH", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ confirmado: true, pasesConfirmados: formPasesConfirmados, fechaConfirmacion: new Date().toISOString() }),
+      });
+      const data = await res.json();
+      if (!res.ok) { showToast("error", data.error ?? "Error"); return; }
+      closeConfirmar();
+      showToast("success", `${invitadoToConfirmar.nombre} confirmado con ${formPasesConfirmados} persona${formPasesConfirmados !== 1 ? "s" : ""}.`);
+      fetchInvitados();
+    } catch { showToast("error", "Error de conexión"); } finally { setFormLoading(false); }
+  };
 
   const confirmarReset = async () => {
     if (!invitadoToReset) return;
@@ -436,9 +457,14 @@ export default function AdminDashboard() {
                     <td className={`py-3 px-3 text-xs ${textMuted}`}>{fmtDate(inv.fechaConfirmacion)}</td>
                     <td className="py-3 px-3">
                       <div className="flex gap-0.5 items-center">
-                        {inv.confirmado
-                          ? <button onClick={() => openReset(inv)} title="Restablecer" className="p-2 rounded-lg text-amber-600 hover:bg-amber-100 transition"><Ic.Reset /></button>
-                          : <button onClick={() => openEditar(inv)} title="Editar" className="p-2 rounded-lg text-[#901F1A] hover:bg-[#901F1A]/10 transition"><Ic.Edit /></button>}
+                        {inv.confirmado ? (
+                          <button onClick={() => openReset(inv)} title="Restablecer" className="p-2 rounded-lg text-amber-600 hover:bg-amber-100 transition"><Ic.Reset /></button>
+                        ) : (
+                          <>
+                            <button onClick={() => openConfirmar(inv)} title="Confirmar asistencia" className="p-2 rounded-lg text-emerald-600 hover:bg-emerald-100 transition"><Ic.UserCheck /></button>
+                            <button onClick={() => openEditar(inv)} title="Editar" className="p-2 rounded-lg text-[#901F1A] hover:bg-[#901F1A]/10 transition"><Ic.Edit /></button>
+                          </>
+                        )}
                         <button onClick={() => openEliminar(inv)} title="Eliminar" className="p-2 rounded-lg text-red-500 hover:bg-red-100 transition"><Ic.Trash /></button>
                       </div>
                     </td>
@@ -511,6 +537,38 @@ export default function AdminDashboard() {
             </button>
           </div>
         </>
+      )}
+
+      {modalConfirmarOpen && invitadoToConfirmar && modalShell(`Confirmar — ${invitadoToConfirmar.nombre}`, closeConfirmar,
+        <div className="space-y-4">
+          <div className={`flex items-center gap-3 p-3 rounded-xl ${D ? "bg-gray-800" : "bg-gray-50"}`}>
+            <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 shrink-0">
+              <Ic.Person />
+            </div>
+            <div>
+              <p className={`font-semibold text-sm ${text}`}>{invitadoToConfirmar.nombre}</p>
+              <p className={`text-xs ${textMuted}`}>Máximo {invitadoToConfirmar.pases} pase{invitadoToConfirmar.pases !== 1 ? "s" : ""}</p>
+            </div>
+          </div>
+          <div>
+            <label className={`block text-sm font-medium mb-1.5 ${textLabel}`}>¿Cuántas personas asistirán?</label>
+            <input
+              type="number"
+              min={1}
+              max={invitadoToConfirmar.pases}
+              value={formPasesConfirmados}
+              onChange={e => setFormPasesConfirmados(Math.min(invitadoToConfirmar!.pases, Math.max(1, parseInt(e.target.value) || 1)))}
+              className={`w-full rounded-xl border px-4 py-2.5 text-sm outline-none transition ${inputCls}`}
+            />
+            <p className={`text-xs mt-1.5 ${textMuted}`}>Límite: {invitadoToConfirmar.pases} persona{invitadoToConfirmar.pases !== 1 ? "s" : ""}</p>
+          </div>
+          <div className="flex gap-2 pt-1">
+            <button onClick={closeConfirmar} className={`flex-1 py-2.5 rounded-xl text-sm font-semibold border transition ${btnGhost}`}>Cancelar</button>
+            <button onClick={submitConfirmar} disabled={formLoading} className="flex-1 py-2.5 rounded-xl bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition disabled:opacity-60 flex items-center justify-center gap-2">
+              {formLoading ? <><Spinner size={14} /> Confirmando…</> : "Confirmar asistencia"}
+            </button>
+          </div>
+        </div>
       )}
 
       {modalResetOpen && invitadoToReset && modalShell("Restablecer invitado", closeReset,
